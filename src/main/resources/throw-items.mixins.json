@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "net.plastoid501.throwitems.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "IHandledScreenMixin",
+    "IScreenMixin",
+    "KeyboardMixin",
+    "MinecraftClientMixin",
+    "MouseMixin"
+  ]
+}
