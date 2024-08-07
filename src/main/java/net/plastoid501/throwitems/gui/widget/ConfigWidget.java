@@ -388,7 +388,7 @@ public class ConfigWidget extends ElementListWidget<ConfigWidget.Entry> {
         private final ButtonWidget addButton;
 
         AddListEntry(TextRenderer textRenderer) {
-            this.listText = new TextFieldWidget(textRenderer, 0, 0, 160, 16, Text.literal(""));
+            this.listText = new TextFieldWidget(textRenderer, 0, 0, 160, 18, Text.literal(""));
             this.listText.setText("");
             this.addButton = ButtonWidget.builder(Text.literal("+ Add"), button -> {
                 String name = this.listText.getText();
@@ -420,7 +420,7 @@ public class ConfigWidget extends ElementListWidget<ConfigWidget.Entry> {
 
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            this.listText.setPosition(x + 130, y + 2);
+            this.listText.setPosition(x + 130, y + 1);
             this.listText.render(context, mouseX, mouseY, tickDelta);
             this.addButton.setPosition(x + 293, y);
             this.addButton.render(context, mouseX, mouseY, tickDelta);
