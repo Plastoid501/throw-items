@@ -2,6 +2,7 @@ package net.plastoid501.throwitems.util;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.component.ComponentMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
@@ -45,8 +46,9 @@ public class ItemUtil {
             if (stack.isEmpty() && otherStack.isEmpty()) {
                 return true;
             }
-            NbtCompound stackNbt = stack.getNbt();
-            NbtCompound otherStackNbt = otherStack.getNbt();
+
+            ComponentMap stackNbt = stack.getComponents();
+            ComponentMap otherStackNbt = otherStack.getComponents();
             return Objects.equals(stackNbt, otherStackNbt) || ((stackNbt == null || stackNbt.isEmpty()) && (otherStackNbt == null || otherStackNbt.isEmpty()));
         }
     }

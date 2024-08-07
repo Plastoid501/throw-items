@@ -57,7 +57,7 @@ public class KeyBindHandler {
                 if (slot == null || slot.getStack().isEmpty()) {
                     return;
                 }
-                NbtUtil.addItemStack(slot.getStack());
+                NbtUtil.addItemStack(slot.getStack(), this.client.world.getRegistryManager());
             }
         }
     }

@@ -52,23 +52,8 @@ public class ListWidget extends ElementListWidget<ListWidget.Entry> {
         }
     }
 
-    @Override
-    protected int getScrollbarPositionX() {
-        return super.getScrollbarPositionX() + 135;
-    }
-
     public int getRowWidth() {
         return super.getRowWidth() + 250;
-    }
-
-    @Override
-    public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-        if (this.client == null || this.client.player == null || this.client.world == null) {
-            this.setRenderBackground(true);
-        } else {
-            this.setRenderBackground(false);
-        }
-        super.renderWidget(context, mouseX, mouseY, delta);
     }
 
     public static class CategoryEntry extends Entry {
@@ -115,15 +100,17 @@ public class ListWidget extends ElementListWidget<ListWidget.Entry> {
             this.listName = listName;
             this.addButton = ButtonWidget.builder(Text.literal("Add"), button -> {
                 if (!ItemUtil.contains(Configs.throwItems.getStacks().get(this.listName), stack)) {
-                    NbtUtil.addItemStack(stack);
-                    ItemListScreen.update();
-                    this.update();
+                    if (ListWidget.this.client.world != null) {
+                        NbtUtil.addItemStack(stack, ListWidget.this.client.world.getRegistryManager());
+                        ItemListScreen.update();
+                        this.update();
+                    }
                 }
             }).dimensions(0, 0, 50, 20).build();
             this.removeButton = ButtonWidget.builder(Text.literal("Remove"), button -> {
                 int index = ItemUtil.indexOf(Configs.throwItems.getStacks().get(this.listName), stack);
-                if (index != -1) {
-                    NbtUtil.removeItemStack(index);
+                if (index != -1 && ListWidget.this.client.world != null) {
+                    NbtUtil.removeItemStack(index, ListWidget.this.client.world.getRegistryManager());
                     ItemListScreen.update();
                     this.update();
                 }

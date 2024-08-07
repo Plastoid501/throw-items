@@ -55,23 +55,8 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
         }
     }
 
-    @Override
-    protected int getScrollbarPositionX() {
-        return super.getScrollbarPositionX() + 135;
-    }
-
     public int getRowWidth() {
         return super.getRowWidth() + 250;
-    }
-
-    @Override
-    public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-        if (this.client == null || this.client.player == null || this.client.world == null) {
-            this.setRenderBackground(true);
-        } else {
-            this.setRenderBackground(false);
-        }
-        super.renderWidget(context, mouseX, mouseY, delta);
     }
 
     public class CategoryEntry extends Entry {
@@ -104,7 +89,7 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
 
     }
 
-    public static class ItemEntry extends Entry {
+    public class ItemEntry extends Entry {
         private final Item item;
         private final TextWidget itemText;
         private final TextRenderer textRenderer;
@@ -119,15 +104,18 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
             this.listName = listName;
             this.addButton = ButtonWidget.builder(Text.literal("Add"), button -> {
                 if (!ItemUtil.contains(Configs.throwItems.getStacks().get(this.listName), item.getDefaultStack())) {
-                    NbtUtil.addItemStack(item.getDefaultStack());
-                    ItemListScreen.update();
-                    this.update();
+                    if (ItemListWidget.this.client.world != null) {
+                        NbtUtil.addItemStack(item.getDefaultStack(), ItemListWidget.this.client.world.getRegistryManager());
+                        ItemListScreen.update();
+                        this.update();
+                    }
+
                 }
             }).dimensions(0, 0, 50, 20).build();
             this.removeButton = ButtonWidget.builder(Text.literal("Remove"), button -> {
                 int index = ItemUtil.indexOf(Configs.throwItems.getStacks().get(this.listName), item.getDefaultStack());
-                if (index != -1) {
-                    NbtUtil.removeItemStack(index);
+                if (index != -1 && ItemListWidget.this.client.world != null) {
+                    NbtUtil.removeItemStack(index, ItemListWidget.this.client.world.getRegistryManager());
                     ItemListScreen.update();
                     this.update();
                 }

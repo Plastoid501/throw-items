@@ -2,6 +2,7 @@ package net.plastoid501.throwitems;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.minecraft.client.MinecraftClient;
 import net.plastoid501.throwitems.util.FileUtil;
 import net.plastoid501.throwitems.util.JsonUtil;
 import net.plastoid501.throwitems.util.NbtUtil;
@@ -22,7 +23,6 @@ public class ThrowItems implements ModInitializer {
 		// Proceed with mild caution.
 
 		FileUtil.generateClientModFolder();
-		NbtUtil.updateNbt();
 		JsonUtil.generateClientModConfig();
 		JsonUtil.updateConfigs();
 	}

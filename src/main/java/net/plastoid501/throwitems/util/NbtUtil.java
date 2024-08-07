@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.plastoid501.throwitems.ThrowItems;
 import net.plastoid501.throwitems.config.Configs;
@@ -40,40 +41,40 @@ public class NbtUtil {
         }
     }
 
-    public static void addItemStack(ItemStack stack) {
+    public static void addItemStack(ItemStack stack, DynamicRegistryManager registries) {
         NbtCompound nbt = readItemListNbt();
         if (nbt == null) {
             return;
         }
         if (nbt.contains(Configs.throwItems.getSelected())) {
             NbtList list = nbt.getList(Configs.throwItems.getSelected(), 10);
-            List<ItemStack> list2 = toList(list, false);
+            List<ItemStack> list2 = toList(list, false, registries);
             list2.add(stack);
             sortList(list2);
-            nbt.put(Configs.throwItems.getSelected(), toNbtList(list2));
-            saveItemListNbt(nbt);
+            nbt.put(Configs.throwItems.getSelected(), toNbtList(list2, registries));
+            saveItemListNbt(nbt, registries);
         }
     }
 
-    public static void addItemStack(NbtList list, int index, ItemStack stack) {
-        list.addElement(index, putItemStack(new NbtCompound(), stack));
+    public static void addItemStack(NbtList list, int index, ItemStack stack, DynamicRegistryManager registries) {
+        list.addElement(index, putItemStack(stack, registries));
     }
 
-    public static void removeItemStack(int index) {
+    public static void removeItemStack(int index, DynamicRegistryManager registries) {
         NbtCompound nbt = readItemListNbt();
         if (nbt == null) {
             return;
         }
         if (nbt.contains(Configs.throwItems.getSelected())) {
             NbtList list = nbt.getList(Configs.throwItems.getSelected(), 10);
-            List<ItemStack> list2 = toList(list, false);
+            List<ItemStack> list2 = toList(list, false, registries);
             list2.remove(index);
-            nbt.put(Configs.throwItems.getSelected(), toNbtList(list2));
-            saveItemListNbt(nbt);
+            nbt.put(Configs.throwItems.getSelected(), toNbtList(list2, registries));
+            saveItemListNbt(nbt, registries);
         }
     }
 
-    public static boolean addNewNbtList(String key) {
+    public static boolean addNewNbtList(String key, DynamicRegistryManager registries) {
         NbtCompound nbt = readItemListNbt();
         if (nbt == null) {
             return false;
@@ -83,11 +84,11 @@ public class NbtUtil {
             return false;
         }
         nbt.put(key, new NbtList());
-        saveItemListNbt(nbt);
+        saveItemListNbt(nbt, registries);
         return true;
     }
 
-    public static boolean removeNbtList(String key) {
+    public static boolean removeNbtList(String key, DynamicRegistryManager registries) {
         NbtCompound nbt = readItemListNbt();
         if (nbt == null) {
             return false;
@@ -96,27 +97,26 @@ public class NbtUtil {
             return false;
         }
         nbt.remove(key);
-        saveItemListNbt(nbt);
+        saveItemListNbt(nbt, registries);
         return true;
     }
 
-    public static List<ItemStack> toList(NbtList list, boolean sort) {
+    public static List<ItemStack> toList(NbtList list, boolean sort, DynamicRegistryManager registries) {
         List<ItemStack> items = new ArrayList<>();
         for (NbtElement element : list) {
             if (element == null) {
                 continue;
             }
-            NbtCompound compound = (NbtCompound) element;
-            items.add(ItemStack.fromNbt(compound));
+            items.add(ItemStack.fromNbt(registries, element).orElse(ItemStack.EMPTY));
         }
 
         return sort ? sortList(items) : items;
     }
 
-    public static NbtList toNbtList(List<ItemStack> stacks) {
+    public static NbtList toNbtList(List<ItemStack> stacks, DynamicRegistryManager registries) {
         NbtList list = new NbtList();
         for (ItemStack stack : stacks) {
-            list.add(putItemStack(new NbtCompound(), stack));
+            list.add(putItemStack(stack, registries));
         }
         return list;
     }
@@ -127,10 +127,10 @@ public class NbtUtil {
             List<ItemStack> items = new ArrayList<>();
             for (ItemStack stack : list) {
                 if (stack.isOf(item)) {
-                    if (stack.hasNbt()) {
-                        items.add(stack);
+                    if (stack.getComponents().isEmpty()) {
+                        items.addLast(stack);
                     } else {
-                        items.add(0, stack);
+                        items.addFirst(stack);
                     }
                 }
             }
@@ -142,8 +142,8 @@ public class NbtUtil {
         return sorted;
     }
 
-    private static NbtCompound putItemStack(NbtCompound nbt, ItemStack stack) {
-        return stack.writeNbt(nbt);
+    private static NbtCompound putItemStack(ItemStack stack, DynamicRegistryManager registries) {
+        return (NbtCompound) stack.encode(registries);
     }
 
     public static NbtCompound readItemListNbt(){
@@ -161,9 +161,9 @@ public class NbtUtil {
         return nbt;
     }
 
-    public static void saveItemListNbt(NbtCompound nbt) {
+    public static void saveItemListNbt(NbtCompound nbt, DynamicRegistryManager registries) {
         writeNbtFile(FileUtil.getConfigPath().resolve(ThrowItems.MOD_ID).resolve(THROW_ITEM_LIST_FILE), nbt);
-        updateNbt();
+        updateNbt(registries);
     }
 
     public static void writeNbtFile(Path path, NbtCompound nbt) {
@@ -174,15 +174,15 @@ public class NbtUtil {
         }
     }
 
-    public static void updateNbt() {
+    public static void updateNbt(DynamicRegistryManager registries) {
         NbtCompound nbt = readItemListNbt();
         if (nbt == null) {
-            saveItemListNbt(throwItemList);
+            saveItemListNbt(throwItemList, registries);
             return;
         }
         Map<String, List<ItemStack>> listMap = new LinkedHashMap<>();
         for (String key : nbt.getKeys()) {
-            listMap.put(key, toList(nbt.getList(key, 10), true));
+            listMap.put(key, toList(nbt.getList(key, 10), true, registries));
         }
         Configs.throwItems.setStacks(listMap);
     }

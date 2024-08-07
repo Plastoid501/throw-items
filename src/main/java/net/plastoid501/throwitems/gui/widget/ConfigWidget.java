@@ -65,11 +65,6 @@ public class ConfigWidget extends ElementListWidget<ConfigWidget.Entry> {
         }
     }
 
-    @Override
-    protected int getScrollbarPositionX() {
-        return super.getScrollbarPositionX() + 85;
-    }
-
     public int getRowWidth() {
         return super.getRowWidth() + 150;
     }
@@ -80,16 +75,6 @@ public class ConfigWidget extends ElementListWidget<ConfigWidget.Entry> {
 
     public void updateChildren() {
         this.children().forEach(Entry::update);
-    }
-
-    @Override
-    public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-        if (this.client == null || this.client.player == null || this.client.world == null) {
-            this.setRenderBackground(true);
-        } else {
-            this.setRenderBackground(false);
-        }
-        super.renderWidget(context, mouseX, mouseY, delta);
     }
 
     public class CategoryEntry extends Entry {
@@ -356,11 +341,21 @@ public class ConfigWidget extends ElementListWidget<ConfigWidget.Entry> {
                 }
             }).size(60, 20).build();
             this.removeButton = ButtonWidget.builder(Text.literal("Remove"), button -> {
-                if (NbtUtil.removeNbtList(key)) {
+                if (ConfigWidget.this.client.world == null) {
+                    return;
+                }
+                if (NbtUtil.removeNbtList(key, ConfigWidget.this.client.world.getRegistryManager())) {
                     ((IScreenMixin) parent).throw_items$clearAndInit();
                 }
             }).size(60, 20).build();
-
+            this.detailButton.active = ConfigWidget.this.client.world != null;
+            this.removeButton.active = ConfigWidget.this.client.world != null;
+            if (this.detailButton.active == false) {
+                this.detailButton.setTooltip(Tooltip.of(Text.of("This button is active when joined world")));
+            }
+            if (this.removeButton.active == false) {
+                this.removeButton.setTooltip(Tooltip.of(Text.of("This button is active when joined world")));
+            }
         }
 
         @Override
@@ -400,11 +395,17 @@ public class ConfigWidget extends ElementListWidget<ConfigWidget.Entry> {
                 if (name.isEmpty() || name.isBlank()) {
                     return;
                 }
-                if (NbtUtil.addNewNbtList(name)) {
+                if (ConfigWidget.this.client.world == null) {
+                    return;
+                }
+                if (NbtUtil.addNewNbtList(name, ConfigWidget.this.client.world.getRegistryManager())) {
                     ((IScreenMixin) parent).throw_items$clearAndInit();
                 }
             }).dimensions(0, 0, 60, 20).build();
-
+            this.addButton.active = ConfigWidget.this.client.world != null;
+            if (this.addButton.active == false) {
+                this.addButton.setTooltip(Tooltip.of(Text.of("This button is active when joined world")));
+            }
         }
 
         @Override
