@@ -64,7 +64,7 @@ public class KeyBindHandler {
 
     public void UpdateAndSendMessage(String name, JThrowItemConfig config) {
         JsonUtil.updateThrowItemConfig(name, new JThrowItemConfig(!config.isEnable(), config.getKeys(), config.getSelected()));
-        this.sendMessage(name, config.isEnable());
+        this.sendMessage(name, !config.isEnable());
     }
 
     public void sendMessage(String name, boolean enable) {
