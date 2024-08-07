@@ -33,7 +33,7 @@ public class NbtUtil {
         Path path = FileUtil.getConfigPath().resolve(ThrowItems.MOD_ID).resolve(THROW_ITEM_LIST_FILE);
         if (Files.notExists(path)) {
             try {
-                NbtIo.write(throwItemList, path.toFile());
+                NbtIo.write(throwItemList, path);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -153,7 +153,7 @@ public class NbtUtil {
     public static NbtCompound readNbtFile(Path path){
         NbtCompound nbt = null;
         try {
-            nbt = NbtIo.read(path.toFile());
+            nbt = NbtIo.read(path);
         } catch (IOException e) {
             ThrowItems.LOGGER.info("Cannot read {}", path.getFileName().toString());
         }
@@ -168,7 +168,7 @@ public class NbtUtil {
 
     public static void writeNbtFile(Path path, NbtCompound nbt) {
         try {
-            NbtIo.write(nbt, path.toFile());
+            NbtIo.write(nbt, path);
         } catch (IOException e) {
             ThrowItems.LOGGER.info("Cannot save {}", path.getFileName().toString());
         }

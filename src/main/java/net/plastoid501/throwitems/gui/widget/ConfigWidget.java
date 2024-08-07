@@ -10,7 +10,6 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.tooltip.Tooltip;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -43,8 +42,8 @@ public class ConfigWidget extends ElementListWidget<ConfigWidget.Entry> {
     private final ModConfig CONFIG = Configs.config;
 
     public ConfigWidget(ConfigScreen parent, MinecraftClient client) {
-        super(client, parent.width + 155, parent.height, 20, parent.height - 32, 23);
-        //super(client, parent.width + 155, parent.height - 52, 20, 23);
+        //super(client, parent.width + 155, parent.height, 20, parent.height - 32, 23);
+        super(client, parent.width + 155, parent.height - 52, 20, 23);
         this.parent = parent;
         this.client = client;
         this.initEntries(client);
@@ -84,13 +83,13 @@ public class ConfigWidget extends ElementListWidget<ConfigWidget.Entry> {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         if (this.client == null || this.client.player == null || this.client.world == null) {
             this.setRenderBackground(true);
         } else {
             this.setRenderBackground(false);
         }
-        super.render(context, mouseX, mouseY, delta);
+        super.renderWidget(context, mouseX, mouseY, delta);
     }
 
     public class CategoryEntry extends Entry {
