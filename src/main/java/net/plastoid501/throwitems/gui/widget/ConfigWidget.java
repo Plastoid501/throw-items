@@ -9,6 +9,8 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.tooltip.Tooltip;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
@@ -140,6 +142,7 @@ public class ConfigWidget extends ElementListWidget<ConfigWidget.Entry> {
             this.list = Configs.throwItems.getStacks().keySet().stream().toList();
             this.selected = this.list.indexOf(Configs.throwItems.getSelected());
             this.text = new TextWidget(Text.literal(key), textRenderer);
+            this.text.setTooltip(Tooltip.of(Text.of(Configs.getToggleHotkeys().get(key).getNarrator())));
             this.enableButton = ButtonWidget.builder(Text.literal(String.valueOf(this.enable)).setStyle(Style.EMPTY.withColor(this.enable ? Color.GREEN.getRGB() : Color.red.getRGB())), button -> {
                 this.enable = !this.enable;
                 JsonUtil.updateThrowItemConfig(key, new JThrowItemConfig(this.enable, this.keys, this.list.get(this.selected)));
@@ -254,6 +257,7 @@ public class ConfigWidget extends ElementListWidget<ConfigWidget.Entry> {
             this.defaultConfig = Configs.getHotkeys().get(key);
             this.keys = config.getHotkeys().get(key).getKeys();
             this.text = new TextWidget(Text.literal(key), textRenderer);
+            this.text.setTooltip(Tooltip.of(Text.of(Configs.getHotkeys().get(key).getNarrator())));
             this.editButton = ButtonWidget.builder(this.getKeyBindText(this.keys), button -> {
                 ConfigWidget.this.parent.keyBinding = key;
                 ConfigWidget.this.parent.keys = new ArrayList<>();

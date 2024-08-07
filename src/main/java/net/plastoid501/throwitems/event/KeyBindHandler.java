@@ -18,13 +18,10 @@ import org.lwjgl.glfw.GLFW;
 
 public class KeyBindHandler {
     private MinecraftClient client;
-    private int postTick;
-    private int next10Tick = 0;
     private static final KeyBindHandler INSTANCE = new KeyBindHandler();
 
     public KeyBindHandler() {
         this.client = MinecraftClient.getInstance();
-        this.postTick = this.client == null || this.client.inGameHud == null ? 0 : this.client.inGameHud.getTicks();
     }
 
     public static KeyBindHandler getInstance() {
@@ -46,7 +43,6 @@ public class KeyBindHandler {
         if (config == null) {
             return;
         }
-
 
         if (screen == null) {
             if (Configs.openGUI.isPressed(false)) {

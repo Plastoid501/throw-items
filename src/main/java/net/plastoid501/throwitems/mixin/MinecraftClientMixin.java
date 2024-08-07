@@ -15,7 +15,7 @@ public class MinecraftClientMixin {
         ClientUtil.throwItems((MinecraftClient) (Object) this);
     }
 
-    @Inject(method = "tick", at = @At(value = "HEAD"))
+    @Inject(method = "tick", at = @At(value = "RETURN"))
     private void postTick(CallbackInfo ci) {
         KeyBindHandler handler = KeyBindHandler.getInstance();
         handler.update();
