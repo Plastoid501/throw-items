@@ -3,7 +3,7 @@
 	"id": "throw-items",
 	"version": "${version}",
 	"name": "Throw Items",
-	"description": "This mod is automatic throw selected items",
+	"description": "This mod will automatically throw selected items",
 	"authors": [
 		"Plastoid501"
 	],
@@ -26,7 +26,7 @@
 		"throw-items.mixins.json"
 	],
 	"depends": {
-		"minecraft": "=1.21"
+		"minecraft": ">=1.21 <=1.21.1"
 	},
 	"suggests": {
 		"another-mod": "*"
