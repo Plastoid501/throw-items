@@ -143,7 +143,7 @@ public class NbtUtil {
     }
 
     private static NbtCompound putItemStack(ItemStack stack, DynamicRegistryManager registries) {
-        return (NbtCompound) stack.encode(registries);
+        return (NbtCompound) stack.toNbt(registries);
     }
 
     public static NbtCompound readItemListNbt(){
