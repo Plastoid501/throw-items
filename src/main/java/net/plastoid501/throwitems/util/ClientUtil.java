@@ -43,7 +43,7 @@ public class ClientUtil {
                 screen instanceof ItemListScreen ||
                 screen instanceof ListScreen
         ) {
-            DefaultedList<ItemStack> inventory = client.player.getInventory().main;
+            DefaultedList<ItemStack> inventory = client.player.getInventory().getMainStacks();
             for (int slot = 0; slot < inventory.size(); slot++) {
                 if (ItemUtil.contains(Configs.throwItems.getSelectedStacks(), inventory.get(slot))) {
                     if (0 <= slot && slot < 9) {

@@ -47,8 +47,8 @@ public class NbtUtil {
             return;
         }
         if (nbt.contains(Configs.throwItems.getSelected())) {
-            NbtList list = nbt.getList(Configs.throwItems.getSelected(), 10);
-            List<ItemStack> list2 = toList(list, false, registries);
+            Optional<NbtList> list = nbt.getList(Configs.throwItems.getSelected());
+            List<ItemStack> list2 = toList(list.orElse(new NbtList()), false, registries);
             list2.add(stack);
             sortList(list2);
             nbt.put(Configs.throwItems.getSelected(), toNbtList(list2, registries));
@@ -66,8 +66,8 @@ public class NbtUtil {
             return;
         }
         if (nbt.contains(Configs.throwItems.getSelected())) {
-            NbtList list = nbt.getList(Configs.throwItems.getSelected(), 10);
-            List<ItemStack> list2 = toList(list, false, registries);
+            Optional<NbtList> list = nbt.getList(Configs.throwItems.getSelected());
+            List<ItemStack> list2 = toList(list.orElse(new NbtList()), false, registries);
             list2.remove(index);
             nbt.put(Configs.throwItems.getSelected(), toNbtList(list2, registries));
             saveItemListNbt(nbt, registries);
@@ -182,7 +182,7 @@ public class NbtUtil {
         }
         Map<String, List<ItemStack>> listMap = new LinkedHashMap<>();
         for (String key : nbt.getKeys()) {
-            listMap.put(key, toList(nbt.getList(key, 10), true, registries));
+            listMap.put(key, toList(nbt.getList(key).orElse(new NbtList()), true, registries));
         }
         Configs.throwItems.setStacks(listMap);
     }
