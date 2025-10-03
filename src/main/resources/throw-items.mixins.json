@@ -9,6 +9,7 @@
   },
   "client": [
     "IHandledScreenMixin",
+    "INbtReadView",
     "IScreenMixin",
     "KeyboardMixin",
     "MinecraftClientMixin",
