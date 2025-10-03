@@ -73,8 +73,8 @@ public class ListWidget extends ElementListWidget<ListWidget.Entry> {
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            this.categoryText.setPosition(x + 170, y + 5);
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            this.categoryText.setPosition(getX() + 170, getY() + 5);
             this.categoryText.render(context, mouseX, mouseY, tickDelta);
         }
 
@@ -131,16 +131,16 @@ public class ListWidget extends ElementListWidget<ListWidget.Entry> {
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            context.drawItem(this.stack, x + 18, y + 2);
-            if (x + 18 <= mouseX && mouseX <= x + 18 + 16 && y + 2 <= mouseY && mouseY <= y + 2 + 16) {
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            context.drawItem(this.stack, getX() + 18, getY() + 2);
+            if (getX() + 18 <= mouseX && mouseX <= getX() + 18 + 16 && getY() + 2 <= mouseY && mouseY <= getY() + 2 + 16) {
                 context.drawItemTooltip(this.textRenderer, this.stack, mouseX, mouseY);
             }
-            this.itemText.setPosition(x + 38, y + 5);
+            this.itemText.setPosition(getX() + 38, getY() + 5);
             this.itemText.render(context, mouseX, mouseY, tickDelta);
-            this.addButton.setPosition(x + 332, y);
+            this.addButton.setPosition(getX() + 332, getY());
             this.addButton.render(context, mouseX, mouseY, tickDelta);
-            this.removeButton.setPosition(x + 385, y);
+            this.removeButton.setPosition(getX() + 385, getY());
             this.removeButton.render(context, mouseX, mouseY, tickDelta);
         }
 

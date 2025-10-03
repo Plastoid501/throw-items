@@ -64,7 +64,7 @@ public class ClientUtil {
 
     public static boolean isSurvival(MinecraftClient client) {
         if (client.player != null && client.getNetworkHandler() != null) {
-            PlayerListEntry playerListEntry = client.getNetworkHandler().getPlayerListEntry(client.player.getGameProfile().getId());
+            PlayerListEntry playerListEntry = client.getNetworkHandler().getPlayerListEntry(client.player.getGameProfile().id());
             return playerListEntry != null && playerListEntry.getGameMode() == GameMode.SURVIVAL;
         }
         return false;

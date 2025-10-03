@@ -147,7 +147,7 @@ public class KeyCodeUtil {
         }
     }
 
-    public static List<Integer> getCodeForKey(List<String> keyNames) {
+    public static List<Integer> getCodeForKey(Collection<String> keyNames) {
         List<Integer> keyCodes = new ArrayList<>();
         for (String keyName : keyNames){
             keyCodes.add(keyNameToCodeMap.get(keyName));
@@ -159,7 +159,7 @@ public class KeyCodeUtil {
         return keyCodeToNameMap.get(keyCode);
     }
 
-    public static List<String> getKeyForCode(List<Integer> keyCodes) {
+    public static List<String> getKeyForCode(Collection<Integer> keyCodes) {
         List<String> keyNames = new ArrayList<>();
         for (Integer keyCode : keyCodes){
             keyNames.add(keyCodeToNameMap.get(keyCode));
@@ -203,7 +203,7 @@ public class KeyCodeUtil {
     }
 
     public static boolean isKeyPressed(int keyCode) {
-        return InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow().getHandle(), keyCode);
+        return InputUtil.isKeyPressed(MinecraftClient.getInstance().getWindow(), keyCode);
     }
 
     public static boolean isMousePressed(int button) {

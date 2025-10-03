@@ -78,8 +78,8 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            this.text.setPosition(ItemListWidget.this.client.currentScreen.width / 2 - this.textWidth / 2, y + 5);
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            this.text.setPosition(ItemListWidget.this.client.currentScreen.width / 2 - this.textWidth / 2, getY() + 5);
             this.text.render(context, mouseX, mouseY, tickDelta);
         }
 
@@ -136,16 +136,16 @@ public class ItemListWidget extends ElementListWidget<ItemListWidget.Entry> {
         }
 
         @Override
-        public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            context.drawItem(this.item.getDefaultStack(), x + 18, y + 2);
-            if (x + 18 <= mouseX && mouseX <= x + 18 + 16 && y + 2 <= mouseY && mouseY <= y + 2 + 16) {
+        public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+            context.drawItem(this.item.getDefaultStack(), getX() + 18, getY() + 2);
+            if (getX() + 18 <= mouseX && mouseX <= getX() + 18 + 16 && getY() + 2 <= mouseY && mouseY <= getY() + 2 + 16) {
                 context.drawItemTooltip(this.textRenderer, this.item.getDefaultStack(), mouseX, mouseY);
             }
-            this.itemText.setPosition(x + 38, y + 5);
+            this.itemText.setPosition(getX() + 38, getY() + 5);
             this.itemText.render(context, mouseX, mouseY, tickDelta);
-            this.addButton.setPosition(x + 332, y);
+            this.addButton.setPosition(getX() + 332, getY());
             this.addButton.render(context, mouseX, mouseY, tickDelta);
-            this.removeButton.setPosition(x + 385, y);
+            this.removeButton.setPosition(getX() + 385, getY());
             this.removeButton.render(context, mouseX, mouseY, tickDelta);
         }
 
