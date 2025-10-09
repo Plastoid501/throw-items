@@ -26,7 +26,7 @@
 		"throw-items.mixins.json"
 	],
 	"depends": {
-		"minecraft": "=1.21.9"
+		"minecraft": ">=1.21.9 <=1.21.10"
 	},
 	"suggests": {
 		"another-mod": "*"
